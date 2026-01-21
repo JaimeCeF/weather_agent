@@ -26,6 +26,18 @@ def get_weather(city: str):
     response = requests.get(f'https://wttr.in/{city}?format=j1')
     return response.json()
 
+@tool('locate_user', description="Look up a user's city based on the context")
+def locate_user(runtime: ToolRuntime[Context]):
+    match runtime.context.user_id:
+        case 'asd123':
+            return 'Zapopan'
+        case 'qwe456':
+            return 'Morelia'
+        case 'zxc789':
+            return 'Southampton'
+        case _:
+            return 'Unknown'
+
 agent = create_agent(
     model = 'claude-haiku-4-5',
     tools = [get_weather],
