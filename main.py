@@ -37,20 +37,32 @@ def locate_user(runtime: ToolRuntime[Context]):
             return 'Southampton'
         case _:
             return 'Unknown'
+        
+model = init_chat_model('claude-haiku-4-5', temperature=0.3)
+
+checkpointer = InMemorySaver()
 
 agent = create_agent(
-    model = 'claude-haiku-4-5',
-    tools = [get_weather],
-    system_prompt='You are a rude weather assistant who makes dirty jokes while providing weather information.'
+    model = model,
+    tools = [get_weather, locate_user],
+    system_prompt = 'You are a rude weather assistant who makes dirty jokes while providing weather information.',
+    context_schema = Context,
+    response_format = ResponseFormat,
+    checkpointer = checkpointer
 )
+
+config = {'configurable': {'thread_id': 1}}
 
 response = agent.invoke({
     'messages': [
-        {'role': 'user' , 'content':'What is the weather like in Zapopan?'}
-    ]
-})
+        {'role': 'user' , 'content':'What is the weather like?'}
+    ]},
+    config = config,
+    context = Context(user_id='asd123')
+)
 
-print(response)
-print(response['messages'])
-print(response['messages'][-1])
-print(response['messages'][-1].content)
+# print(response)
+# print(response['messages'])
+# print(response['messages'][-1])
+# print(response['messages'][-1].content)
+print(response['structured_response'])
