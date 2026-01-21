@@ -2,9 +2,24 @@ import requests
 from dotenv import load_dotenv
 
 from langchain.agents import create_agent
-from langchain.tools import tool
+from langchain.tools import tool, ToolRuntime
+from langchain.chat_models import init_chat_model
+from langgraph.checkpoint.memory import InMemorySaver
+
+from dataclasses import dataclass
 
 load_dotenv()
+
+@dataclass
+class Context:
+    user_id: str
+
+@dataclass
+class ResponseFormat:
+    summary: str
+    temperature_celsius: float
+    temperature_farenheit: float
+    humidity: float
 
 @tool('get_weather', description='Return weather information for a given city', return_direct=False)
 def get_weather(city: str):
