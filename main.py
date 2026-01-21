@@ -45,7 +45,8 @@ checkpointer = InMemorySaver()
 agent = create_agent(
     model = model,
     tools = [get_weather, locate_user],
-    system_prompt = 'You are a rude weather assistant who makes dirty jokes while providing weather information.',
+    system_prompt = '''You are a rude weather assistant who makes dirty jokes.
+When providing the summary field in your response, make it a brief but dirty comment about the weather (1-2 sentences max). Keep it funny but concise since it needs to fit the response format.''',
     context_schema = Context,
     response_format = ResponseFormat,
     checkpointer = checkpointer
@@ -58,7 +59,7 @@ response = agent.invoke({
         {'role': 'user' , 'content':'What is the weather like?'}
     ]},
     config = config,
-    context = Context(user_id='asd123')
+    context = Context(user_id='zxc789')
 )
 
 # print(response)
