@@ -59,11 +59,21 @@ response = agent.invoke({
         {'role': 'user' , 'content':'What is the weather like?'}
     ]},
     config = config,
-    context = Context(user_id='zxc789')
+    context = Context(user_id='asd123')
 )
 
 # print(response)
 # print(response['messages'])
 # print(response['messages'][-1])
 # print(response['messages'][-1].content)
+print(response['structured_response'])
+
+response = agent.invoke({
+    'messages': [
+        {'role': 'user' , 'content':'Is it normal for the weather to be like this this time of the year?'}
+    ]},
+    config = config,
+    context = Context(user_id='asd123')
+)
+
 print(response['structured_response'])
